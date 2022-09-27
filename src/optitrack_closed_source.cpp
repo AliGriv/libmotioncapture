@@ -124,7 +124,7 @@ namespace libmotioncapture {
     // Connect first to find out server configuration
     sNatNetClientConnectParams connectParams;
     connectParams.serverAddress = hostname.c_str();
-    connectParams.serverCommandPort = port_command;
+    connectParams.serverCommandPort = 1510;//port_command;
     err = pImpl->client.Connect(connectParams);
     if (err != ErrorCode_OK) {
       throw std::runtime_error("NatNetSDK Error " + std::to_string(err));
@@ -138,16 +138,16 @@ namespace libmotioncapture {
     }
     pImpl->clockFrequency = serverDesc.HighResClockFrequency;
 
-    connectParams.serverDataPort = serverDesc.ConnectionDataPort;
-    connectParams.connectionType = serverDesc.ConnectionMulticast ? ConnectionType_Multicast : ConnectionType_Unicast;
+    connectParams.serverDataPort = 1511;//serverDesc.ConnectionDataPort;
+    connectParams.connectionType = ConnectionType_Multicast; //serverDesc.ConnectionMulticast ? ConnectionType_Multicast : ConnectionType_Unicast;
 
     std::string multicastAddress = 
       std::to_string(serverDesc.ConnectionMulticastAddress[0]) + "." + 
       std::to_string(serverDesc.ConnectionMulticastAddress[1]) + "." + 
       std::to_string(serverDesc.ConnectionMulticastAddress[2]) + "." +
       std::to_string(serverDesc.ConnectionMulticastAddress[3]);
-    connectParams.multicastAddress = multicastAddress.c_str();
-
+    //connectParams.multicastAddress = multicastAddress.c_str();
+    connectParams.multicastAddress = "239.255.42.99";
     // Reconnect
     pImpl->client.Disconnect();
     err = pImpl->client.Connect(connectParams);
